@@ -1,0 +1,60 @@
+@Library('newLibrary')_
+pipeline
+{
+    agent any
+    stages
+    {
+        stage('Continuous Download')
+        {
+            steps
+            {
+               script
+               {
+                  shared.newGit("https://github.com/lillysree/maven1.git")
+                }
+            }
+        } 
+        stage('Continuous Build')
+         {
+           steps
+           {
+            script
+             {
+                 shared.newMaven()
+             }
+               
+           }
+         }
+         stage('Contnuous Deployment')
+         {
+           steps
+           {
+             script
+             {
+                shared.newDeploy("172.16.2.182","testapp")
+             }
+           }
+         }
+         stage('Continuous Testing')
+         {
+           steps
+            {
+             script
+             {
+                shared.newGit("https://github.com/lillysree/FunctionalTesting.git") 
+                shared.newSelenium("/home/ubuntu/.jenkins/workspace/Declpipelinewithsharedlibrary")
+              }
+            }
+         }
+         stage('Continuous Delivery')
+         {
+          steps
+          {
+            script
+            {
+             shared.newDeploy("172.16.2.238","prodapp")
+            }
+          }
+        }
+    }    
+}
