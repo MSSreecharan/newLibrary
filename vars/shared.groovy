@@ -10,3 +10,8 @@ def newMaven()
 {
    sh "scp /home/ubuntu/.jenkins/workspace/Declpipelinewithsharedlibrary/webapp/target/webapp.war ubuntu@${ip}:/var/lib/tomcat9/webapps/${contextpath}.war"
 }
+
+def newSelenium(path)
+{
+ sh "java -jar $path/testing.jar"
+}
